@@ -33,7 +33,15 @@ router.post("/", async (req, res, next) => {
         );
       return;
     }
-    res.send(collection);
+    const newUser = {};
+    requiredFields.map((e) => (newUser[e] = body[e]));
+    try {
+      await db.collection("users").insertOne(newUser);
+      res.status(200).send(newUser);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
   });
 });
 
