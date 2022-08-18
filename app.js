@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
+var { expressjwt: jwt } = require("express-jwt");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var graphRouter = require("./routes/mood");
@@ -59,7 +60,7 @@ app.use("/session", sessionsRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/poll/create", pollCreateRouter);
-app.use("/poll/all", pollAllRouter);
+app.use("/poll/all", jwt({ secret: process.env.SECRET_TOKEN }), pollAllRouter);
 app.use("/poll/current", pollCurrentRouter);
 
 // catch 404 and forward to error handler
