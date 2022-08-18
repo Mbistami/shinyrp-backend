@@ -28,6 +28,7 @@ router.post("/", async (req, res, next) => {
         "shinyrp-auth-cookie",
         jwt.sign(...collection, process.env.SECRET_TOKEN, {
           expiresIn: "1800s",
+          algorithm: "HS256",
         }),
         {
           maxAge: 900000,

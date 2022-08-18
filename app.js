@@ -60,7 +60,11 @@ app.use("/session", sessionsRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/poll/create", pollCreateRouter);
-app.use("/poll/all", jwt({ secret: process.env.SECRET_TOKEN }), pollAllRouter);
+app.use(
+  "/poll/all",
+  jwt({ secret: process.env.SECRET_TOKEN, algorithms: ["HS256"] }),
+  pollAllRouter
+);
 app.use("/poll/current", pollCurrentRouter);
 
 // catch 404 and forward to error handler
