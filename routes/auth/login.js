@@ -7,7 +7,7 @@ var { fields_verification, generate_condition } = require("../../utils/parser");
 /* GET home page. */
 const requiredFields = ["name", "username", "email", "password"];
 const uniqueFields = ["username", "password"];
-router.post("/", async (req, res, next) => {
+router.options("/", async (req, res, next) => {
   const body = req.body;
   if (
     (await fields_verification(uniqueFields, body).catch((err) => {
@@ -29,7 +29,7 @@ router.post("/", async (req, res, next) => {
         jwt.sign(...collection, process.env.SECRET_TOKEN, {
           expiresIn: "1800s",
         }),
-        { maxAge: 900000, secure: true }
+        { maxAge: 900000, domain: ".herokuapp.com", secure: true }
       );
       res.send();
       return;
