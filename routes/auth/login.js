@@ -7,7 +7,7 @@ var { fields_verification, generate_condition } = require("../../utils/parser");
 /* GET home page. */
 const requiredFields = ["name", "username", "email", "password"];
 const uniqueFields = ["username", "password"];
-router.options("/", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   const body = req.body;
   if (
     (await fields_verification(uniqueFields, body).catch((err) => {
