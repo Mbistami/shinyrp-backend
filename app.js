@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cookieSession({
-    domain: ".shinyrp.dk",
+    domain: "shinyrp.dk",
     keys: [process.env.SECRET_TOKEN],
     maxAge: 24 * 60 * 60 * 1000,
   })
