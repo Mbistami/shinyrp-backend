@@ -65,7 +65,7 @@ app.use(
         return null;
       }
     },
-  })
+  }).unless({ path: ["/login"] })
 );
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
