@@ -7,7 +7,7 @@ var { fields_verification, generate_condition } = require("../../utils/parser");
 /* GET home page. */
 const requiredFields = ["name", "username", "email", "password"];
 const uniqueFields = ["username", "password"];
-router.get("/", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   const body = req.body;
   if (
     (await fields_verification(uniqueFields, body).catch((err) => {
@@ -29,7 +29,7 @@ router.get("/", async (req, res, next) => {
         jwt.sign(...collection, process.env.SECRET_TOKEN, {
           expiresIn: "1800s",
         }),
-        { maxAge: 900000, httpOnly: true, domain: ".shinyrp.dk" }
+        { maxAge: 900000, domain: ".shinyrp.dk" }
       );
       res.send();
       return;
