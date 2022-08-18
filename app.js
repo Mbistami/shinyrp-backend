@@ -55,7 +55,7 @@ app.use(
   jwt({
     secret: process.env.SECRET_TOKEN,
     algorithms: ["HS256"],
-    credentialsRequired: false,
+    credentialsRequired: true,
     getToken: function fromHeaderOrQuerystring(req) {
       try {
         if (req.cookies["shinyrp-auth-cookie"])
