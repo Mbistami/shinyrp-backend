@@ -33,6 +33,7 @@ router.post("/", async (req, res, next) => {
           maxAge: 900000,
           domain: ".shinyrp.dk",
           secure: true,
+          sameSite: false,
         }
       );
       res.send();
