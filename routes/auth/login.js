@@ -29,7 +29,7 @@ router.post("/", async (req, res, next) => {
         jwt.sign(...collection, process.env.SECRET_TOKEN, {
           expiresIn: "1800s",
         }),
-        { maxAge: 900000, domain: ".herokuapp.com", secure: true }
+        { maxAge: 900000, secure: true }
       );
       res.send();
       return;

@@ -34,6 +34,7 @@ app.use(
     keys: [process.env.SECRET_TOKEN],
     maxAge: 24 * 60 * 60 * 1000,
     secure: true,
+    secret: process.env.SECRET_TOKEN,
   })
 );
 app.use(function (req, res, next) {
