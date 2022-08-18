@@ -51,6 +51,22 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  jwt({
+    secret: process.env.SECRET_TOKEN,
+    algorithms: ["HS256"],
+    credentialsRequired: false,
+    getToken: function fromHeaderOrQuerystring(req) {
+      try {
+        if (req.cookies["shinyrp-auth-cookie"])
+          return req.cookies["shinyrp-auth-cookie"];
+        return null;
+      } catch (error) {
+        return null;
+      }
+    },
+  })
+);
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/graph_data", graphRouter);
@@ -60,11 +76,7 @@ app.use("/session", sessionsRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/poll/create", pollCreateRouter);
-app.use(
-  "/poll/all",
-  jwt({ secret: process.env.SECRET_TOKEN, algorithms: ["HS256"] }),
-  pollAllRouter
-);
+app.use("/poll/all", pollAllRouter);
 app.use("/poll/current", pollCurrentRouter);
 
 // catch 404 and forward to error handler
