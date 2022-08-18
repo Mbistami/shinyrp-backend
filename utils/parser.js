@@ -19,4 +19,13 @@ const generate_condition = (fields, jsonObject) =>
     });
     res(conditions);
   });
-module.exports = { fields_verification, generate_condition };
+const extract_fields = (fields, jsonObject) =>
+  new Promise((res, rej) => {
+    const newObject = {};
+    fields.map((e) => {
+      newObject[e] = jsonObject[e];
+      return;
+    });
+    res(newObject);
+  });
+module.exports = { fields_verification, generate_condition, extract_fields };

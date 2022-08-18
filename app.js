@@ -11,6 +11,11 @@ var extractRouter = require("./routes/extract_users");
 var userRouter = require("./routes/user");
 var sessionsRouter = require("./routes/sessions");
 var registerRouter = require("./routes/auth/register");
+var loginRouter = require("./routes/auth/login");
+var pollCreateRouter = require("./routes/poll/create");
+var pollAllRouter = require("./routes/poll/all");
+var pollCurrentRouter = require("./routes/poll/current");
+var cookieSession = require("cookie-session");
 var cors = require("cors");
 
 var app = express();
@@ -24,8 +29,14 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  cookieSession({
+    domain: ".shinyrp.dk",
+    keys: [process.env.SECRET_TOKEN],
+    maxAge: 24 * 60 * 60 * 1000,
+  })
+);
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/graph_data", graphRouter);
@@ -33,6 +44,10 @@ app.use("/extract", extractRouter);
 app.use("/user", userRouter);
 app.use("/session", sessionsRouter);
 app.use("/register", registerRouter);
+app.use("/login", loginRouter);
+app.use("/poll/create", pollCreateRouter);
+app.use("/poll/all", pollAllRouter);
+app.use("/poll/current", pollCurrentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
