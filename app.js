@@ -27,21 +27,21 @@ app.set("view engine", "jade");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(
-  cookieSession({
-    domain: "herokuapp.com",
-    keys: [process.env.SECRET_TOKEN],
-    maxAge: 24 * 60 * 60 * 1000,
-    secure: true,
-    secret: process.env.SECRET_TOKEN,
-    sameSite: "none",
-  })
-);
+app.use(cookieParser({}));
+// app.use(
+//   cookieSession({
+//     domain: "herokuapp.com",
+//     keys: [process.env.SECRET_TOKEN],
+//     maxAge: 24 * 60 * 60 * 1000,
+//     secure: true,
+//     secret: process.env.SECRET_TOKEN,
+//     sameSite: "none",
+//   })
+// );
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
