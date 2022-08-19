@@ -32,7 +32,7 @@ router.post("/", async (req, res, next) => {
         }),
         {
           maxAge: 900000,
-          domain: "shinyrp-backend.herokuapp.com",
+          domain: ".shinyrp.dk",
           sameSite: "none",
           httpOnly: false,
           secure: true,
