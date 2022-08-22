@@ -3,6 +3,7 @@ var router = express.Router();
 var connection = require("../../modules/conn");
 var jwt = require("jsonwebtoken");
 var { fields_verification, generate_condition } = require("../../utils/parser");
+const { body, validationResult } = require("express-validator");
 
 /* GET home page. */
 const requiredFields = ["name", "username", "email", "password"];
@@ -17,6 +18,10 @@ router.post("/", async (req, res, next) => {
     })) < 0
   )
     return;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
   connection.connectToServer(async (err, db) => {
     const collection = await db
