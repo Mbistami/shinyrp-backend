@@ -1,10 +1,20 @@
 var express = require("express");
 var router = express.Router();
 var connection = require("../../modules/conn");
+var jwt = require("jsonwebtoken");
 var { fields_verification, generate_condition } = require("../../utils/parser");
 
 /* GET home page. */
-const requiredFields = ["name", "username", "email", "password"];
+const requiredFields = [
+  "name",
+  "username",
+  "email",
+  "password",
+  "first_name",
+  "second_name",
+  "pfp",
+  "birthday",
+];
 const uniqueFields = ["username", "email"];
 router.post("/", async (req, res, next) => {
   const body = req.body;
@@ -35,8 +45,24 @@ router.post("/", async (req, res, next) => {
     }
     const newUser = {};
     requiredFields.map((e) => (newUser[e] = body[e]));
+    newUser.created_at = new Date().getTime();
+    newUser.role = ["user"];
     try {
       await db.collection("users").insertOne(newUser);
+      res.cookie(
+        "shinyrp-auth-cookie",
+        jwt.sign(newUser, process.env.SECRET_TOKEN, {
+          expiresIn: "1800s",
+          algorithm: "HS256",
+        }),
+        {
+          maxAge: 900000,
+          domain: ".shinyrp.dk",
+          sameSite: "none",
+          httpOnly: false,
+          secure: true,
+        }
+      );
       res.status(200).send(newUser);
     } catch (error) {
       console.log(error);

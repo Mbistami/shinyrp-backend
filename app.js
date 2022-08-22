@@ -10,12 +10,14 @@ var usersRouter = require("./routes/users");
 var graphRouter = require("./routes/mood");
 var extractRouter = require("./routes/extract_users");
 var userRouter = require("./routes/user");
+var meRouter = require("./routes/me");
 var sessionsRouter = require("./routes/sessions");
 var registerRouter = require("./routes/auth/register");
 var loginRouter = require("./routes/auth/login");
 var pollCreateRouter = require("./routes/poll/create");
 var pollAllRouter = require("./routes/poll/all");
 var pollCurrentRouter = require("./routes/poll/current");
+var votesRouter = require("./routes/poll/votes/vote");
 var cookieSession = require("cookie-session");
 var cors = require("cors");
 
@@ -46,11 +48,15 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization, content-type"
   );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
   next();
 });
 app.use(express.static(path.join(__dirname, "public")));
+// ROUTES LOCKING
 app.use(
   jwt({
     secret: process.env.SECRET_TOKEN,
@@ -65,7 +71,7 @@ app.use(
         return null;
       }
     },
-  }).unless({ path: ["/login"] })
+  }).unless({ path: ["/login", "/register"] })
 );
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -75,9 +81,11 @@ app.use("/user", userRouter);
 app.use("/session", sessionsRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
+app.use("/@me", meRouter);
 app.use("/poll/create", pollCreateRouter);
 app.use("/poll/all", pollAllRouter);
 app.use("/poll/current", pollCurrentRouter);
+app.use("/poll/vote", votesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

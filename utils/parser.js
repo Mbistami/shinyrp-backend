@@ -1,7 +1,10 @@
+const jwt_decode = require("jwt-decode");
+
 const fields_verification = async (fields, jsonObject) =>
   new Promise(async (res, rej) => {
     await fields.map((e) => {
       if (!jsonObject[e]) {
+        console.log(jsonObject, e);
         rej(`${e} missing!`);
         return;
       }
@@ -28,4 +31,24 @@ const extract_fields = (fields, jsonObject) =>
     });
     res(newObject);
   });
-module.exports = { fields_verification, generate_condition, extract_fields };
+
+/*
+  Verifies if the user has the shinyrp cookie returns:
+    -1 : user has no cookie;
+    0 : user token faild to decode;
+    1 : perfectly working shinyrp cookie [USER AUTHTORIZED else USER UNAUTHTORIZED]
+ */
+
+const has_cookie = (req) => {
+  const token = req?.cookies[process.env.COOKIE_NAME];
+  if (!token) return -1;
+  const decoded = jwt_decode(token);
+  if (!decoded) return 0;
+  return 1;
+};
+module.exports = {
+  fields_verification,
+  generate_condition,
+  extract_fields,
+  has_cookie,
+};

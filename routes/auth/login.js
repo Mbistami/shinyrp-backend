@@ -21,7 +21,7 @@ router.post("/", async (req, res, next) => {
   connection.connectToServer(async (err, db) => {
     const collection = await db
       .collection("users")
-      .find({ $and: await generate_condition(uniqueFields, body) })
+      .find({ $and: await generate_condition(uniqueFields, body) }) // => {$and: [{username: value}, {password: value}]]}
       .toArray();
     if (collection.length > 0) {
       res.cookie(
@@ -40,15 +40,6 @@ router.post("/", async (req, res, next) => {
       );
       res.send();
       return;
-    }
-    const newUser = {};
-    requiredFields.map((e) => (newUser[e] = body[e]));
-    try {
-      await db.collection("users").insertOne(newUser);
-      res.status(200).send(newUser);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send(error);
     }
   });
 });
