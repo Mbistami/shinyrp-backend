@@ -31,7 +31,7 @@ router.get("/", async function (req, res, next) {
       res.send({
         ...polls,
         total,
-        isVoted: Boolean(userVote),
+        isVoted: userVote?.vote,
       });
     } catch (error) {
       res.status(500).send(`ERROR:\n${error}`);
