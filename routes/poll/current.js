@@ -28,6 +28,10 @@ router.get("/", async function (req, res, next) {
       const userVote = polls?.votes_ids.find(
         (e) => e.user == user?._id.toString()
       );
+      polls.options.map((e, i) => {
+        if (userVote?.vote === e?.option)
+          polls.options[i] = { ...polls.options[i], isSelected: true };
+      });
       res.send({
         ...polls,
         total,
