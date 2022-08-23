@@ -22,7 +22,7 @@ router.post(
   body("username")
     .isLength({ min: 4 })
     .withMessage("username must be 4 chars long")
-    .matches(/^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]/)
+    .matches(/^(?=[a-zA-Z0-9._])(?!.*[_.]{2})[^_.].*[^_.]/)
     .withMessage("symbol not allowed in username"),
   body("email").isEmail().withMessage("not valid e-mail!"),
 
