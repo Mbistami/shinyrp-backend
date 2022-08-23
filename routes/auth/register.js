@@ -25,7 +25,6 @@ router.post(
     .matches(/^(?=[a-zA-Z0-9._])(?!.*[_.]{2})[^_.].*[^_.]/)
     .withMessage("symbol not allowed in username"),
   body("email").isEmail().withMessage("not valid e-mail!"),
-
   async (req, res, next) => {
     const body = req.body;
     if (

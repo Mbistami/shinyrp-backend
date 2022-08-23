@@ -2,12 +2,10 @@ var express = require("express");
 const { ObjectId } = require("mongodb");
 var router = express.Router();
 var connection = require("../../modules/conn");
-var { extract_fields, fields_verification } = require("../../utils/parser");
+var { get_user } = require("../../utils/parser");
 
-const requiredFields = ["subject", "options", "creatorId"];
-const uniqueFields = [];
 router.get("/", async function (req, res, next) {
-  const body = req.body;
+  const user = get_user(req);
   connection.connectToServer(async (err, db) => {
     if (err) {
       res.status(500).send(`ERROR:\n${error}`);
@@ -27,7 +25,14 @@ router.get("/", async function (req, res, next) {
         .toArray();
       let total = 0;
       await count.map((e) => (total += e?.votes));
-      res.send({ ...polls, total });
+      const userVote = polls?.votes_ids.find(
+        (e) => e.user == user?._id.toString()
+      );
+      res.send({
+        ...polls,
+        total,
+        isVoted: Boolean(userVote),
+      });
     } catch (error) {
       res.status(500).send(`ERROR:\n${error}`);
     }

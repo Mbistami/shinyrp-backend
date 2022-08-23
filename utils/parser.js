@@ -32,6 +32,8 @@ const extract_fields = (fields, jsonObject) =>
     res(newObject);
   });
 
+const get_user = (req) => jwt_decode(req.cookies[process.env.COOKIE_NAME]);
+
 /*
   Verifies if the user has the shinyrp cookie returns:
     -1 : user has no cookie;
@@ -51,4 +53,5 @@ module.exports = {
   generate_condition,
   extract_fields,
   has_cookie,
+  get_user,
 };

@@ -24,11 +24,17 @@ router.post("/", async (req, res, next) => {
   }
 
   connection.connectToServer(async (err, db) => {
+    console.log("cookie!", await generate_condition(uniqueFields, body));
     const collection = await db
       .collection("users")
       .find({ $and: await generate_condition(uniqueFields, body) }) // => {$and: [{username: value}, {password: value}]]}
-      .toArray();
+      .toArray()
+      .catch(() => {
+        console.log("error");
+      });
+    console.log(collection.length);
     if (collection.length > 0) {
+      console.log("cookie!");
       res.cookie(
         "shinyrp-auth-cookie",
         jwt.sign(...collection, process.env.SECRET_TOKEN, {
@@ -43,6 +49,7 @@ router.post("/", async (req, res, next) => {
           secure: true,
         }
       );
+      console.log("cookie!");
       res.send();
       return;
     }
