@@ -18,6 +18,7 @@ var pollCreateRouter = require("./routes/poll/create");
 var pollAllRouter = require("./routes/poll/all");
 var pollCurrentRouter = require("./routes/poll/current");
 var votesRouter = require("./routes/poll/votes/vote");
+var searchRouter = require("./routes/users/search");
 var cookieSession = require("cookie-session");
 var cors = require("cors");
 
@@ -86,6 +87,7 @@ app.use("/poll/create", pollCreateRouter);
 app.use("/poll/all", pollAllRouter);
 app.use("/poll/current", pollCurrentRouter);
 app.use("/poll/vote", votesRouter);
+app.use("/users/search", searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
