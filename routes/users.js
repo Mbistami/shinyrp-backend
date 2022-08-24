@@ -16,6 +16,14 @@ router.get("/", async (req, res, next) => {
       .collection("users")
       .find({})
       .toArray(async (err, res_) => {
+        if (err) {
+          res.status(500).send(`ERROR\n${err}`);
+          return;
+        }
+        for (var i = 0; i < res_.length; i++) {
+          var doc = res_[i];
+          delete doc.password;
+        }
         res.status(200).send(res_);
       });
   });
