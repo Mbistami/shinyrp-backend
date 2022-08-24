@@ -14,24 +14,9 @@ router.get("/", async (req, res, next) => {
     const buff = new Buffer.from("7UGhGWl4LHGvFS2gTLf5lg==", 3);
     dbConnection
       .collection("users")
-      .find({
-        street: "Twin center 5th floor ",
-      })
-      .toArray(async (err, employees) => {
-        const data = await dbConnection.collection("users").aggregate([
-          { $match: { type: "MOOD" } },
-          {
-            $group: {
-              _id: { createdAt: "$createdAt" },
-              count: {
-                $sum: 1,
-              },
-              vote: {
-                $first: "$vote",
-              },
-            },
-          },
-        ]);
+      .find({})
+      .toArray(async (err, res_) => {
+        res.status(200).send(res_);
       });
   });
 });
