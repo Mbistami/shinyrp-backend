@@ -19,6 +19,11 @@ var pollAllRouter = require("./routes/poll/all");
 var pollCurrentRouter = require("./routes/poll/current");
 var votesRouter = require("./routes/poll/votes/vote");
 var searchRouter = require("./routes/users/search");
+var discordRouter = require("./routes/auth/discord");
+var unlinkRouter = require("./routes/report/report_issue");
+var fetchRequestsRouter = require("./routes/whitelist/fetch");
+var requestRouter = require("./routes/whitelist/request");
+var requestsRouter = require("./routes/whitelist/fetchAll");
 var cookieSession = require("cookie-session");
 var cors = require("cors");
 
@@ -72,7 +77,9 @@ app.use(
         return null;
       }
     },
-  }).unless({ path: ["/login", "/register"] })
+  }).unless({
+    path: ["/login", "/register", "/link/discord", "/request/unlink"],
+  })
 );
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -88,6 +95,11 @@ app.use("/poll/all", pollAllRouter);
 app.use("/poll/current", pollCurrentRouter);
 app.use("/poll/vote", votesRouter);
 app.use("/users/search", searchRouter);
+app.use("/link/discord", discordRouter);
+app.use("/request/unlink", unlinkRouter);
+app.use("/whitelist/request", requestRouter);
+app.use("/whitelist/fetch", fetchRequestsRouter);
+app.use("/whitelist/fetch/all", requestsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

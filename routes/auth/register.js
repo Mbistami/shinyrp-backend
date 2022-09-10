@@ -3,18 +3,17 @@ var router = express.Router();
 var connection = require("../../modules/conn");
 var jwt = require("jsonwebtoken");
 var { fields_verification, generate_condition } = require("../../utils/parser");
+var { is_id_linked } = require("../../utils/dbVerifications");
 const { body, validationResult } = require("express-validator");
 
 /* GET home page. */
 const requiredFields = [
-  "name",
   "username",
   "email",
   "password",
-  "first_name",
-  "second_name",
   "pfp",
   "birthday",
+  "id",
 ];
 const uniqueFields = ["username", "email"];
 router.post(
@@ -39,7 +38,14 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    console.log("LOGIN TO DB");
     connection.connectToServer(async (err, db) => {
+      if (err) {
+        res.send(err);
+        console.log(err);
+        return;
+      }
+      console.log("LOGED");
       const collection = await db
         .collection("users")
         .find({ $or: await generate_condition(uniqueFields, body) })
@@ -60,6 +66,11 @@ router.post(
       newUser.created_at = new Date().getTime();
       newUser.role = ["user"];
       try {
+        console.log(await is_id_linked(newUser, db));
+        if (await is_id_linked(newUser, db)) {
+          res.status(409).send("discord id already linked");
+          return;
+        }
         await db.collection("users").insertOne(newUser);
         res.cookie(
           "shinyrp-auth-cookie",

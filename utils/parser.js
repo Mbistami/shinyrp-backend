@@ -9,8 +9,9 @@ const fields_verification = async (fields, jsonObject) =>
         return;
       }
     });
-    res();
+    res(1);
   });
+
 const generate_condition = (fields, jsonObject) =>
   new Promise((res, rej) => {
     const conditions = [];

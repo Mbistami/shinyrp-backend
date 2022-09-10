@@ -24,6 +24,11 @@ router.post("/", async (req, res, next) => {
   }
 
   connection.connectToServer(async (err, db) => {
+    if (err)
+    {
+      res.status(500).send(err);
+      return;
+    }
     console.log("cookie!", await generate_condition(uniqueFields, body));
     const collection = await db
       .collection("users")
@@ -53,6 +58,7 @@ router.post("/", async (req, res, next) => {
       res.send();
       return;
     }
+    res.status(404).send()
   });
 });
 
