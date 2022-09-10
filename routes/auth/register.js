@@ -80,10 +80,10 @@ router.post(
           }),
           {
             maxAge: 900000,
-            // domain: ".shinyrp.dk",
-            // sameSite: "none",
-            // httpOnly: false,
-            // secure: true,
+            domain: ".shinyrp.dk",
+            sameSite: "none",
+            httpOnly: false,
+            secure: true,
           }
         );
         res.status(200).send(newUser);

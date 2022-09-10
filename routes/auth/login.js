@@ -43,16 +43,17 @@ router.post("/", async (req, res, next) => {
         }),
         {
           maxAge: 900000,
-          // domain: ".shinyrp.dk",
-          // sameSite: "none",
-          // httpOnly: false,
-          // secure: true,
+          domain: ".shinyrp.dk",
+          sameSite: "none",
+          httpOnly: false,
+          secure: true,
         }
       );
       console.log("cookie!");
       res.send();
       return;
     }
+    res.status(404).send()
   });
 });
 

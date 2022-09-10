@@ -21,6 +21,9 @@ var votesRouter = require("./routes/poll/votes/vote");
 var searchRouter = require("./routes/users/search");
 var discordRouter = require("./routes/auth/discord");
 var unlinkRouter = require("./routes/report/report_issue");
+var fetchRequestsRouter = require("./routes/whitelist/fetch");
+var requestRouter = require("./routes/whitelist/request");
+var requestsRouter = require("./routes/whitelist/fetchAll");
 var cookieSession = require("cookie-session");
 var cors = require("cors");
 
@@ -94,6 +97,9 @@ app.use("/poll/vote", votesRouter);
 app.use("/users/search", searchRouter);
 app.use("/link/discord", discordRouter);
 app.use("/request/unlink", unlinkRouter);
+app.use("/whitelist/request", requestRouter);
+app.use("/whitelist/fetch", fetchRequestsRouter);
+app.use("/whitelist/fetch/all", requestsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

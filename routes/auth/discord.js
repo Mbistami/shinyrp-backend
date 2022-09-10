@@ -27,7 +27,7 @@ router.post("/", function (req, res, next) {
   data_1.append("client_id", process.env.DISCORD_CLIENT_ID);
   data_1.append("client_secret", process.env.DISCORD_CLIENT_SECRET);
   data_1.append("grant_type", "authorization_code");
-  data_1.append("redirect_uri", `http://localhost:3001/`);
+  data_1.append("redirect_uri", process.env.REDIRECTION_URL);
   //   data_1.append("scope", "identify");
   data_1.append("code", req.body.code);
   console.log(data_1);
