@@ -14,6 +14,7 @@ const requiredFields = [
   "pfp",
   "birthday",
   "id",
+  "discriminator"
 ];
 const uniqueFields = ["username", "email"];
 router.post(
